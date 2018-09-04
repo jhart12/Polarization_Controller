@@ -35,6 +35,15 @@ sweepPolarizationController(fname)
 ```
 This function sweeps the voltages applied to the piezoelectric transducers of the polarization controller one at a time, and records the output state of polarization from the polarization analyzer. The digital voltage value of 0 is applied to the 3 piezoelectric transducers that are fixed, while the other is swept. The sweep is controlled by the internal variables *Vmin*, *Vmax*, and *Vstep*. The results of the polarization measurements are written to a text file whose title is given by the input *fname*. These measurements are the basis of the calibration of the polarization controller, as discussed below.
 
+**get_theta_from_s.py**
+This file contains 3 python functions that are used internally in other functions described above. The main function is
+```
+vs,thetas,rot_vec = get_theta_of_v(fname,rot_vec)
+```
+*get_theta_of_v* reads in the data from *sweepPolarizationController* described above stored in *fname*. It then determines *theta*(*v*) by iterating through all the voltages applied to the piezoelectric transducer and determining the angle of rotation *theta* on the Poincare sphere about the axis of rotation *rot_vec* caused by the application of that voltage. The voltages are returned as *vs*, the angles are returned as *thetas*, and the *rot_vec* is returned because this function will invert the input *rot_vec* so that all angles *theta* are positive/counterclockwise.
+
+
+
 **determine_rotation_vectors.py**
 ```
 u1,u2,u3,u4,s0 = determine_rotation_vectors(fname)
