@@ -52,6 +52,18 @@ y = f2(theta,*vecs)
 ```
 is a helper function used by *get_theta_from_s*. It is the function that we find the roots of: R*s0-sf. *vecs* = [*rot_vec*,*s0*,*sf*].
 
+**makeLUT.py**
+
+```
+p0,p1,p2,p3 = get_v_of_theta_fits(fname,v0,v1,v2,v3)
+```
+This function reads in the results of *sweepPolarizationController* stored in *fname* and returns the best fit line to v(theta) for each of the channels. *v0*, *v1*, *v2*, *v3* are the vectors describing the axes of rotation on the Poincare sphere of the 4 piezoelectric polarization transducers. *p0*=[*m0*,*b0*], where *m* is the slope and *b* is the y-intercept of the best fit line.
+
+```
+v = get_v2(theta,p)
+```
+takes as inputs *theta* (the rotation angle) and *p*=[*m*,*b*], where *m* is the slope and *b* is the y-intercept of the best fit line for v(theta). Returns *v*, the voltage to apply to the piezoelectric transducer to obtain the desired rotation angle *theta*.
+
 **determine_rotation_vectors.py**
 ```
 u1,u2,u3,u4,s0 = determine_rotation_vectors(fname)
