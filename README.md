@@ -31,6 +31,17 @@ read(self,channel)
 ```
 *channel* is an integer from 0 to 3 that tells which of the 4 piezoelectric transducers you would like to read the current value of.
 
+
+```
+sweepPolarizationController(fname)
+```
+This function sweeps the voltages applied to the piezoelectric transducers of the polarization controller one at a time, and records the output state of polarization from the polarization analyzer. The digital voltage value of 0 is applied to the 3 piezoelectric transducers that are fixed, while the other is swept. The sweep is controlled by the internal variables *Vmin*, *Vmax*, and *Vstep*. The results of the polarization measurements are written to a text file whose title is given by the input *fname*. These measurements are the basis of the calibration of the polarization controller, as discussed below.
+
+```
+u1,u2,u3,u4,s0 = determine_rotation_vectors(fname)
+```
+This function reads in the polarization sweep data from *fname* and returns the axis of rotation (*u1,*u2*,*u3*,*u4*) on Poincare sphere of each of the piezoelectric transducers of the polarization controller. Also returns the initial condition *s0*, which is the position of the SOP on Poincare sphere when the digital voltage applied to each of the transducers is 0.
+
 #### Dependencies
 ##### mcculw
 The mcculw package contains an API (Application Programming Interface) for interacting with the I/O Library for Measurement Computing Data Acquisition products, Universal Library. It can be obtained for free by typing in the command line 
@@ -38,5 +49,7 @@ The mcculw package contains an API (Application Programming Interface) for inter
 pip install mcculw
 ```
 
-##### props
+##### win32com
+The win32com python package allows python to communicate with the COM port on a Windows machine. This port is used to communicate with the Agilent N7788B Polarization Analyzer via GPIB. 
+
 
