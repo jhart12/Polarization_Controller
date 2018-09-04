@@ -43,9 +43,14 @@ vs,thetas,rot_vec = get_theta_of_v(fname,rot_vec)
 *get_theta_of_v* reads in the data from *sweepPolarizationController* described above stored in *fname*. It then determines *theta*(*v*) by iterating through all the voltages applied to the piezoelectric transducer and determining the angle of rotation *theta* on the Poincare sphere about the axis of rotation *rot_vec* caused by the application of that voltage. The voltages are returned as *vs*, the angles are returned as *thetas*, and the *rot_vec* is returned because this function will invert the input *rot_vec* so that all angles *theta* are positive/counterclockwise.
 
 ```
-get_theta_from_s(rot_vec,s0,sf,N)
+theta = get_theta_from_s(rot_vec,s0,sf,N)
 ```
-*get_theta_from_s* is a helper function
+*get_theta_from_s* is a helper function used by *get_theta_of_v*. It finds the rotation angle *theta* that describes the rotation on the Poincare sphere from *s0* to *sf* about the axis of rotation *rot_vec*. It uses Newton's method to find the roots of R(sf-s0), where *R* is the rotation matrix about the axis of rotation *rot_vec*. Because Newton's method is initial condition dependent and can get stuck at an undesired root it performs the calculation *N* times from different random initial conditions and selects the root with smallest absolute value.
+
+```
+y = f2(theta,*vecs)
+```
+is a helper function used by *get_theta_from_s*. It is the function that we find the roots of: R*s0-sf. *vecs* = [*rot_vec*,*s0*,*sf*].
 
 **determine_rotation_vectors.py**
 ```
