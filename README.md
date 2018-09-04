@@ -42,7 +42,10 @@ vs,thetas,rot_vec = get_theta_of_v(fname,rot_vec)
 ```
 *get_theta_of_v* reads in the data from *sweepPolarizationController* described above stored in *fname*. It then determines *theta*(*v*) by iterating through all the voltages applied to the piezoelectric transducer and determining the angle of rotation *theta* on the Poincare sphere about the axis of rotation *rot_vec* caused by the application of that voltage. The voltages are returned as *vs*, the angles are returned as *thetas*, and the *rot_vec* is returned because this function will invert the input *rot_vec* so that all angles *theta* are positive/counterclockwise.
 
-
+```
+get_theta_from_s(rot_vec,s0,sf,N)
+```
+*get_theta_from_s* is a helper function
 
 **determine_rotation_vectors.py**
 ```
