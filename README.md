@@ -12,9 +12,7 @@ The Measurement Computing USB DIO24 Digital IO Board is a board that takes a USB
 The Agilent N7788B Polarization Analyzer is used to calibrate the General Photonics PCD-M02 Polarization Controller. The PC communicates with the polarization analyzer via GPIB. Dependencies include Agilent's Photonic Application Suite. An example of how to communicate with the analyzer can be found in sweepPolarizationController.py.
 
 ## Software
-```
-PolarizationControllerDIO.py
-```
+**PolarizationControllerDIO.py**
 This python file contains a class called PolarizationController. 
 
 The class has two methods: write and read.
@@ -31,12 +29,13 @@ read(self,channel)
 ```
 *channel* is an integer from 0 to 3 that tells which of the 4 piezoelectric transducers you would like to read the current value of.
 
-
+**sweepPolarizationController.py**
 ```
 sweepPolarizationController(fname)
 ```
 This function sweeps the voltages applied to the piezoelectric transducers of the polarization controller one at a time, and records the output state of polarization from the polarization analyzer. The digital voltage value of 0 is applied to the 3 piezoelectric transducers that are fixed, while the other is swept. The sweep is controlled by the internal variables *Vmin*, *Vmax*, and *Vstep*. The results of the polarization measurements are written to a text file whose title is given by the input *fname*. These measurements are the basis of the calibration of the polarization controller, as discussed below.
 
+**determine_rotation_vectors.py**
 ```
 u1,u2,u3,u4,s0 = determine_rotation_vectors(fname)
 ```
