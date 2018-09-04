@@ -90,6 +90,20 @@ v = get_v2(theta,p)
 ```
 takes as inputs *theta* (the rotation angle) and *p*=[*m*,*b*], where *m* is the slope and *b* is the y-intercept of the best fit line for v(theta). Returns *v*, the voltage to apply to the piezoelectric transducer to obtain the desired rotation angle *theta*.
 
+**run_main.py**
+This is the main script that runs the polarization controller calibration and
+control.
+
+It calibrates the polarization controller using the polarization analyzer.
+
+Then it allows the user to input a desired state of polarization (SOP), and
+determines the polarization controller settings needed to obtain that SOP. 
+It then applies those settings to the polarization controller, and gets the 
+actual output SOP from the polarization analyzer for comparison with the 
+desired result.
+
+This last part (input, application, checking) is looped, so that the user can
+repeatedly enter different SOPs and check that they work.
 
 #### Dependencies
 ##### mcculw
