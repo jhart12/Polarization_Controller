@@ -41,7 +41,7 @@ This file contains 3 python functions that are used internally in other function
 ```
 vs,thetas,rot_vec = get_theta_of_v(fname,rot_vec)
 ```
-*get_theta_of_v* reads in the data from *sweepPolarizationController* described above stored in *fname*. It then determines *theta*(*v*) by iterating through all the voltages applied to the piezoelectric transducer and determining the angle of rotation *theta* on the Poincare sphere about the axis of rotation *rot_vec* caused by the application of that voltage. The voltages are returned as *vs*, the angles are returned as *thetas*, and the *rot_vec* is returned because this function will invert the input *rot_vec* so that all angles *theta* are positive/counterclockwise.
+*get_theta_of_v* reads in the data from *sweepPolarizationController* described above stored in *fname*. It then determines *theta*(*v*) by iterating through all the voltages applied to the piezoelectric transducer and determining the angle of rotation *theta* on the Poincare sphere about the axis of rotation *rot_vec* caused by the application of that voltage. The voltages are returned as *vs*, the angles are returned as *thetas*, and the *rot_vec* is returned because this function will invert the input *rot_vec* so that all angles *theta* are positive/counterclockwise. This is the LUT that will be used to determine which *v* to apply to obtain a desired *theta*.
 
 ```
 theta = get_theta_from_s(rot_vec,s0,sf,N)
@@ -53,17 +53,6 @@ y = f2(theta,*vecs)
 ```
 is a helper function used by *get_theta_from_s*. It is the function that we find the roots of: R*s0-sf. *vecs* = [*rot_vec*,*s0*,*sf*].
 
-**makeLUT.py**
-
-```
-p0,p1,p2,p3 = get_v_of_theta_fits(fname,v0,v1,v2,v3)
-```
-This function reads in the results of *sweepPolarizationController* stored in *fname* and returns the best fit line to v(theta) for each of the channels. *v0*, *v1*, *v2*, *v3* are the vectors describing the axes of rotation on the Poincare sphere of the 4 piezoelectric polarization transducers. *p0*=[*m0*,*b0*], where *m* is the slope and *b* is the y-intercept of the best fit line.
-
-```
-v = get_v2(theta,p)
-```
-takes as inputs *theta* (the rotation angle) and *p*=[*m*,*b*], where *m* is the slope and *b* is the y-intercept of the best fit line for v(theta). Returns *v*, the voltage to apply to the piezoelectric transducer to obtain the desired rotation angle *theta*.
 
 **determine_rotation_vectors.py**
 ```
@@ -82,6 +71,24 @@ This function finds the rotation angles *thetas* that describe the rotation on t
 f(thetas,*vecs)
 ```
 is a helper function used by *find_optimal_rotation_angles*. It is the function that we find the roots of: R*s0-sf. *vecs* = [*rot_vec*,*s0*,*sf*].
+
+**rotate_polarization_along_equator.py**
+This script does exactly what it says it does. It performs a calibration by calling *sweepPolarizationController* and then *get_v_of_theta_fits* to obtain the LUT. It then starts the polarization at s0=(1,0,0) and sweeps along the equator to sf=(-1,0,0), measuring the SOP along the way. It also plots the results.
+
+**multi_channel_GUI_optimize_rotation.py**
+This script creates a GUI in python that allows the user to play around with changing the voltages and seeing how the polarization state of the light in the fiber changes on the Poincare sphere. It uses many/most of the functions described above.
+
+**makeLUT.py**--deprecated
+
+```
+p0,p1,p2,p3 = get_v_of_theta_fits(fname,v0,v1,v2,v3)
+```
+This function reads in the results of *sweepPolarizationController* stored in *fname* and returns the best fit line to v(theta) for each of the channels. *v0*, *v1*, *v2*, *v3* are the vectors describing the axes of rotation on the Poincare sphere of the 4 piezoelectric polarization transducers. *p0*=[*m0*,*b0*], where *m* is the slope and *b* is the y-intercept of the best fit line.
+
+```
+v = get_v2(theta,p)
+```
+takes as inputs *theta* (the rotation angle) and *p*=[*m*,*b*], where *m* is the slope and *b* is the y-intercept of the best fit line for v(theta). Returns *v*, the voltage to apply to the piezoelectric transducer to obtain the desired rotation angle *theta*.
 
 
 #### Dependencies
