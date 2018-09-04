@@ -35,6 +35,7 @@ sweepPolarizationController(fname)
 ```
 This function sweeps the voltages applied to the piezoelectric transducers of the polarization controller one at a time, and records the output state of polarization from the polarization analyzer. The digital voltage value of 0 is applied to the 3 piezoelectric transducers that are fixed, while the other is swept. The sweep is controlled by the internal variables *Vmin*, *Vmax*, and *Vstep*. The results of the polarization measurements are written to a text file whose title is given by the input *fname*. These measurements are the basis of the calibration of the polarization controller, as discussed below.
 
+
 **get_theta_from_s.py**
 This file contains 3 python functions that are used internally in other functions described above. The main function is
 ```
@@ -69,6 +70,19 @@ takes as inputs *theta* (the rotation angle) and *p*=[*m*,*b*], where *m* is the
 u1,u2,u3,u4,s0 = determine_rotation_vectors(fname)
 ```
 This function reads in the polarization sweep data from *fname* and returns the axis of rotation (*u1,*u2*,*u3*,*u4*) on Poincare sphere of each of the piezoelectric transducers of the polarization controller. Also returns the initial condition *s0*, which is the position of the SOP on Poincare sphere when the digital voltage applied to each of the transducers is 0.
+
+**solve_for_angles.py**
+
+```
+thetas = find_optimal_rotation_angles(rot_vecs,s0,sf,N)
+```
+This function finds the rotation angles *thetas* that describe the rotation on the Poincare sphere from *s0* to *sf* about the axes of rotation *rot_vecs*. It uses Newton's method to find the roots of R(sf-s0), where *R* is the rotation matrix about the axis of rotation *rot_vec*. Because Newton's method is initial condition dependent and can get stuck at an undesired root it performs the calculation *N* times from different random initial conditions and selects the root with smallest absolute value.
+
+```
+f(thetas,*vecs)
+```
+is a helper function used by *find_optimal_rotation_angles*. It is the function that we find the roots of: R*s0-sf. *vecs* = [*rot_vec*,*s0*,*sf*].
+
 
 #### Dependencies
 ##### mcculw
